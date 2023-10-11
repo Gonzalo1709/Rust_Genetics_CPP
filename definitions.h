@@ -7,6 +7,7 @@
 struct Definitions {
     std::unordered_map<char, char> geneTypes;
     std::unordered_map<char, int> goal;
+    std::string genesInGoal;
     float rWeight = 0.9;
     float gWeight = 0.5;
     std::string filename = "clones";
@@ -26,6 +27,13 @@ struct Definitions {
         goal['Y'] = 4;
         goal['G'] = 2;
         goal['H'] = 0;
+
+        // Defining genes in goal
+        for(auto& goalGene: goal) {
+            if(goalGene.second > 0) {
+                genesInGoal += goalGene.first;
+            }
+        }
     }
 
 };

@@ -4,6 +4,6 @@
 
 int main() {
     CloneProcessor cloneProcessor;
-    cloneProcessor.setUpThreads();
+    cloneProcessor.processCurrentClones();
     return 0;
 }

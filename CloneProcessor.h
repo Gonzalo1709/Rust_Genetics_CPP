@@ -10,7 +10,6 @@
 
 class CloneProcessor {
 public:
-    std::deque<std::thread> threads;
     Definitions definitions;
     CloneManager cloneManager;
     // Pass to private when done testing
@@ -19,9 +18,11 @@ public:
         cloneManager = CloneManager();
         definitions = Definitions();
     };
-    std::string checkResult(std::deque<std::string> parents);
-    void setUpThreads();
-    void processClones();
+    std::pair<std::string, std::pair<bool, bool>> checkResult(std::deque<std::string> parents);
+    // Return is <string result, <bool goalReached, bool contingency>>
+    std::pair<bool, bool> checkResultWithParents(const std::deque<std::string>& parents);
+    // Helper function for processCurrentClones
+    void processCurrentClones();
 };
 
 

@@ -23,13 +23,10 @@ std::pair<bool, bool> CloneProcessor::checkResultWithParents(const std::deque<st
     // return is <goalReached, contingency>
     std::pair<std::string, std::pair<bool, bool>> currentResult = checkResult(parents);
     if (currentResult.second.first){
-        std::cout << "Goal reached ";
         if(currentResult.second.second){
-            std::cout << "with contingency." << std::endl;
-            std::cout << "Trying to find a non contingent result..." << std::endl;
             return std::make_pair(true, true);
         }
-        std::cout << "without contingency!" << std::endl;
+        std::cout << "Goal reached without contingency!" << std::endl;
         std::cout << "Parent(s): " << std::endl;
         for(auto& parent: parents){
             std::cout << parent << std::endl;
@@ -133,13 +130,13 @@ void CloneProcessor::processCurrentClones() {
 std::pair<std::string, std::pair<bool, bool>> CloneProcessor::checkResult(std::deque<std::string> parents) {
     std::string resultReturn;
     std::deque<std::string> possibleResults;
-    possibleResults.push_back("");
+    possibleResults.emplace_back("");
     bool contingencyBigScope = false;
     for (int i = 0; i < 6; i ++){
         bool contingency = false;
         std::unordered_map<char, int> currentGeneWeights;
         for (auto& parent: parents) {
-            currentGeneWeights[parent[i]] += definitions.geneTypes[parent[i]];
+            currentGeneWeights[parent[i]] += cloneManager.definitions.geneTypes[parent[i]];
         }
         int maxWeight = 0;
         std::string maxGenes;
@@ -151,7 +148,7 @@ std::pair<std::string, std::pair<bool, bool>> CloneProcessor::checkResult(std::d
                 contingency = false;
             }
             else if (geneWeight.second == maxWeight && !maxGenes.empty()) {
-                if(definitions.genesInGoal.find(gene) != std::string::npos){
+                if(cloneManager.definitions.genesInGoal.find(gene) != std::string::npos){
                     contingency = true;
                     maxGenes += gene;
                 }
@@ -181,7 +178,7 @@ std::pair<std::string, std::pair<bool, bool>> CloneProcessor::checkResult(std::d
         for(auto& gene: possibleResult){
             currentGeneAmounts[gene]++;
         }
-        for(auto& goalGene: definitions.goal){
+        for(auto& goalGene: cloneManager.definitions.goal){
             if(currentGeneAmounts[goalGene.first] != goalGene.second){
                 found = false;
             }

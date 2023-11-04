@@ -31,16 +31,16 @@ public:
 };
 
 class CloneManager {
-private:
-    Definitions definitions;
 public:
+    Definitions definitions;
     std::unordered_set<Clone, CloneHash> clones;
-    CloneManager();
+    explicit CloneManager(std::string filename);
     void requestClones();
     void printClones();
 
     void loadAllFromFile();
     void saveToFile();
+    void unloadAndSaveToFile();
 };
 
 

@@ -7,16 +7,12 @@
 #include <deque>
 #include <thread>
 #include <mutex>
+#include <utility>
 
 class CloneProcessor {
 public:
-    Definitions definitions;
     CloneManager cloneManager;
-    // Pass to private when done testing
-
-    CloneProcessor(){
-        cloneManager = CloneManager();
-        definitions = Definitions();
+    explicit CloneProcessor(const std::string& filename): cloneManager(filename){
     };
     std::pair<std::string, std::pair<bool, bool>> checkResult(std::deque<std::string> parents);
     // Return is <string result, <bool goalReached, bool contingency>>

@@ -58,7 +58,8 @@ void CloneManager::printClones() {
 
 void CloneManager::loadAllFromFile() {
     std::ifstream file;
-    file.open(definitions.filename+definitions.extension);
+    std::string path = "saves/"+definitions.filename+definitions.extension;
+    file.open(path);
     if (!file) {
         std::cout << "Save file not found. Creating new file." << std::endl;
         std::ofstream newFile;
@@ -76,14 +77,20 @@ void CloneManager::loadAllFromFile() {
 
 void CloneManager::saveToFile() {
     std::ofstream file;
-    file.open(definitions.filename+definitions.extension);
+    std::string path = "saves/"+definitions.filename+definitions.extension;
+    file.open(path);
     for (const auto& clone: clones) {
         file << clone.genes << std::endl;
     }
     file.close();
 }
 
-CloneManager::CloneManager() {
+CloneManager::CloneManager(std::string filename) {
+    definitions.filename = std::move(filename);
     loadAllFromFile();
 }
 
+void CloneManager::unloadAndSaveToFile() {
+    saveToFile();
+    clones.clear();
+}
